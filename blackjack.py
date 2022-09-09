@@ -325,7 +325,7 @@ if __name__ == '__main__':
     while True:
         deck, player_chips = blackjack_game(deck, player_chips)
         # if we got through 2/3 of the deck, we get a new deck
-        if len(deck) <= 104:
+        if len(deck) <= decks_quantity * 52 / 3:
             deck = new_deck_shuffle()
             print('Deck of cards is reshuffled.')
         # checking if we ran out of chips

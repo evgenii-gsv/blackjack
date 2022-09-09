@@ -322,6 +322,7 @@ if __name__ == '__main__':
     initial_chips_value = 1000
     player_chips = initial_chips_value
     deck = new_deck_shuffle()
+    print('Welcome to Blackjack table. Dealer stands on 17. Blackjack pays 3 to 2.')
     while True:
         deck, player_chips = blackjack_game(deck, player_chips)
         # if we got through 2/3 of the deck, we get a new deck

@@ -313,7 +313,7 @@ def blackjack_game(deck, chips):
 
 if __name__ == '__main__':
     suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds']
-    suits_values = {"Spades": "\u2664", "Hearts": "\u2661", "Clubs": "\u2667", "Diamonds": "\u2662"}
+    suits_values = {"Spades": "♠", "Hearts": "♥", "Clubs": "♣", "Diamonds": "♦"}
     cards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
     cards_value = {
         'A': 11, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10

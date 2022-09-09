@@ -108,13 +108,16 @@ def blackjack_game(deck, chips):
             else:
                 print(f'You stopped playing with {chips} chips. You didn\'t win any chips.')
             sys.exit()
-        bet = int(bet)
-        if chips - bet < 0:
-            print('You don\'t have enough chips for this bet.')
-        else:
-            chips -= bet
-            print(f'Your bet is {bet} chips.')
-            validating_bet = False
+        try:
+            bet = int(bet)
+            if chips - bet < 0:
+                print('You don\'t have enough chips for this bet.')
+            else:
+                chips -= bet
+                print(f'Your bet is {bet} chips.')
+                validating_bet = False
+        except ValueError:
+            print('Invalid bet.')
 
     # dealing hands to player and dealer
     while len(dealer_cards) < 2:

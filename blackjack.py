@@ -1,25 +1,23 @@
 import random
-from termcolor import colored
 import os
 import sys
 import time
 
 
 class Card:
-    def __init__(self, suit, value, color, card_value):
+    def __init__(self, suit, value, card_value):
         self.suit = suit
         self.value = value
-        self.color = color
         self.card_value = card_value
 
 
 def print_cards(cards, hidden=False):
     if hidden:
-        print(colored(cards[0].value + cards[0].suit, color=cards[0].color), end=' ')
+        print(cards[0].value + cards[0].suit, end=' ')
         print('XX', end=' ')
     else:
         for card in cards:
-            print(colored(card.value + card.suit, color=card.color), end=' ')
+            print(card.value + card.suit, end=' ')
     print()
 
 
@@ -27,7 +25,7 @@ def new_deck_shuffle():
     deck = []
     for suit in suits * decks_quantity:
         for card in cards * decks_quantity:
-            deck.append(Card(suits_values[suit], card, suits_colors[suit], cards_value[card]))
+            deck.append(Card(suits_values[suit], card, cards_value[card]))
     random.shuffle(deck)
     return deck
 
@@ -316,7 +314,6 @@ def blackjack_game(deck, chips):
 if __name__ == '__main__':
     suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds']
     suits_values = {"Spades": "\u2664", "Hearts": "\u2661", "Clubs": "\u2667", "Diamonds": "\u2662"}
-    suits_colors = {"Spades": "grey", "Hearts": "red", "Clubs": "grey", "Diamonds": "red"}
     cards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
     cards_value = {
         'A': 11, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10

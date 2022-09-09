@@ -100,11 +100,11 @@ def blackjack_game(deck, chips):
         bet = input('>>>> ').lower().strip()
         if bet == 'stop':
             if chips < initial_chips_value:
-                print(f'You stopped playing with {chips} chips. You lost {initial_chips_value - chips} chips.')
+                input(f'You stopped playing with {chips} chips. You lost {initial_chips_value - chips} chips. Press \'Enter\' to exit.')
             elif chips > initial_chips_value:
-                print(f'You stopped playing with {chips} chips. You won {chips - initial_chips_value} chips.')
+                input(f'You stopped playing with {chips} chips. You won {chips - initial_chips_value} chips. Press \'Enter\' to exit.')
             else:
-                print(f'You stopped playing with {chips} chips. You didn\'t win any chips.')
+                input(f'You stopped playing with {chips} chips. You didn\'t win any chips. Press \'Enter\' to exit.')
             sys.exit()
         try:
             bet = int(bet)
@@ -178,90 +178,99 @@ def blackjack_game(deck, chips):
     # checking if we can split hand
     if player_cards[0].value == player_cards[1].value and chips - bet >= 0:
         print(f'Would you like to Split your hand? You will need to place an additional bet of {bet} chips. (y/n)')
-        choice = input('>>>> ').lower().strip()
-        if choice == 'y' or choice == 'yes':
+        while True:
+            choice = input('>>>> ').lower().strip()
+            if choice == 'y' or choice == 'yes':
 
-            # making two hands and accepting the bet
-            chips -= bet
-            first_hand_bet = bet
-            second_hand_bet = bet
-            first_hand = [player_cards[0]]
-            second_hand = [player_cards[1]]
-            first_hand.append(deck[0])
-            deck.pop(0)
-            second_hand.append(deck[0])
-            deck.pop(0)
-            first_hand_score = get_cards_value(first_hand)
-            second_hand_score = get_cards_value(second_hand)
-            print('Your total bet is:', bet * 2)
-            print()
-            print('Playing your first hand:')
-            print_cards(first_hand)
-            print('Your score:', first_hand_score)
-
-            # playing first hand round
-            deck, chips, first_hand_score, first_hand_bet = player_round(first_hand, deck, chips, first_hand_bet)
-            if first_hand_score > 21:
-                print(f'You busted and lost {first_hand_bet} chips.')
-                first_hand_bet = 0
-
-            print()
-            print('Playing your second hand:')
-            print_cards(second_hand)
-            print('Your score:', second_hand_score)
-
-            # playing second hand round
-            deck, chips, second_hand_score, second_hand_bet = player_round(second_hand, deck, chips, second_hand_bet)
-            if second_hand_score > 21:
-                print(f'You busted and lost {second_hand_bet} chips.')
-                second_hand_bet = 0
-            if first_hand_score > 21 and second_hand_score > 21:
-                return deck, chips
-
-            # dealer's round on split hands
-            print()
-            print('Dealer cards:')
-            print_cards(dealer_cards)
-            print('Dealer score:', dealer_score)
-            time.sleep(1)
-            while dealer_score < 17:
-                dealer_cards.append(deck[0])
+                # making two hands and accepting the bet
+                chips -= bet
+                first_hand_bet = bet
+                second_hand_bet = bet
+                first_hand = [player_cards[0]]
+                second_hand = [player_cards[1]]
+                first_hand.append(deck[0])
                 deck.pop(0)
-                # if we go beyond 21, check if we have Aces with value 11
-                if get_cards_value(dealer_cards) > 21:
-                    for card in dealer_cards:
-                        if card.card_value == 11:
-                            card.card_value = 1
-                            break
-                dealer_score = get_cards_value(dealer_cards)
+                second_hand.append(deck[0])
+                deck.pop(0)
+                first_hand_score = get_cards_value(first_hand)
+                second_hand_score = get_cards_value(second_hand)
+                print('Your total bet is:', bet * 2)
                 print()
-                print('Dealer hits')
+                print('Playing your first hand:')
+                print_cards(first_hand)
+                print('Your score:', first_hand_score)
+
+                # playing first hand round
+                deck, chips, first_hand_score, first_hand_bet = player_round(first_hand, deck, chips, first_hand_bet)
+                if first_hand_score > 21:
+                    print(f'You busted and lost {first_hand_bet} chips.')
+                    first_hand_bet = 0
+
+                print()
+                print('Playing your second hand:')
+                print_cards(second_hand)
+                print('Your score:', second_hand_score)
+
+                # playing second hand round
+                deck, chips, second_hand_score, second_hand_bet = player_round(second_hand, deck, chips, second_hand_bet)
+                if second_hand_score > 21:
+                    print(f'You busted and lost {second_hand_bet} chips.')
+                    second_hand_bet = 0
+                if first_hand_score > 21 and second_hand_score > 21:
+                    return deck, chips
+
+                # dealer's round on split hands
+                print()
+                print('Dealer cards:')
                 print_cards(dealer_cards)
                 print('Dealer score:', dealer_score)
                 time.sleep(1)
+                while dealer_score < 17:
+                    dealer_cards.append(deck[0])
+                    deck.pop(0)
+                    # if we go beyond 21, check if we have Aces with value 11
+                    if get_cards_value(dealer_cards) > 21:
+                        for card in dealer_cards:
+                            if card.card_value == 11:
+                                card.card_value = 1
+                                break
+                    dealer_score = get_cards_value(dealer_cards)
+                    print()
+                    print('Dealer hits')
+                    print_cards(dealer_cards)
+                    print('Dealer score:', dealer_score)
+                    time.sleep(1)
 
-            # checking if dealer busted
-            if dealer_score > 21:
-                print(f'Dealer busted and you won {first_hand_bet + second_hand_bet} chips.')
-                chips += (first_hand_bet + second_hand_bet)*2
+                # checking if dealer busted
+                if dealer_score > 21:
+                    print(f'Dealer busted and you won {first_hand_bet + second_hand_bet} chips.')
+                    chips += (first_hand_bet + second_hand_bet)*2
+                    return deck, chips
+
+                # end split round
+                if first_hand_score > 21:
+                    print('Your first hand busted.')
+                elif dealer_score >= first_hand_score:
+                    print(f'Dealer won with the score of {dealer_score} against your first hand score of {first_hand_score}.')
+                    print(f'You lost {first_hand_bet} chips.')
+                else:
+                    chips += first_hand_bet * 2
+                    print(f'You won with the first hand score of {first_hand_score} against Dealer\'s score of {dealer_score}.')
+                    print(f'You won {first_hand_bet} chips.')
+                if second_hand_score > 21:
+                    print('Your second hand busted.')
+                elif dealer_score >= second_hand_score:
+                    print(f'Dealer won with the score of {dealer_score} against your second hand score of {second_hand_score}.')
+                    print(f'You lost {second_hand_bet} chips.')
+                else:
+                    chips += second_hand_bet * 2
+                    print(f'You won with the second hand score of {second_hand_score} against Dealer\'s score of {dealer_score}.')
+                    print(f'You won {second_hand_bet} chips.')
                 return deck, chips
-
-            # end split round
-            if dealer_score >= first_hand_score:
-                print(f'Dealer won with the score of {dealer_score} against your first hand score of {first_hand_score}.')
-                print(f'You lost {first_hand_bet} chips.')
+            elif choice == 'n' or choice == 'no':
+                break
             else:
-                chips += first_hand_bet * 2
-                print(f'You won with the first hand score of {first_hand_score} against Dealer\'s score of {dealer_score}.')
-                print(f'You won {first_hand_bet} chips.')
-            if dealer_score >= second_hand_score:
-                print(f'Dealer won with the score of {dealer_score} against your second hand score of {second_hand_score}.')
-                print(f'You lost {second_hand_bet} chips.')
-            else:
-                chips += second_hand_bet * 2
-                print(f'You won with the second hand score of {second_hand_score} against Dealer\'s score of {dealer_score}.')
-                print(f'You won {second_hand_bet} chips.')
-            return deck, chips
+                print('Your choice is not clear.')
 
     # player's round
     deck, chips, player_score, bet = player_round(player_cards, deck, chips, bet)
@@ -331,5 +340,5 @@ if __name__ == '__main__':
             print('Deck of cards is reshuffled.')
         # checking if we ran out of chips
         if player_chips <= 0:
-            print('You have lost all your money. Go home and think about what you\'ve done.')
+            input('You have lost all your money. Go home and think about what you\'ve done. Press \'Enter\' to exit.')
             break

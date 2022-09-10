@@ -145,7 +145,7 @@ def blackjack_game(deck, chips):
     if dealer_cards[0].card_value == 11 or dealer_cards[0].card_value == 1:
         insurance_bet = 0
         if chips - int(bet/2) >= 0:
-            print(f'Dealer has a chance of Blackjack. Would you like to place an Insurance Bet of {int(bet/2)} chips? (y/n)')
+            print(f'Dealer has a chance of Blackjack. Would you like to place an Insurance Bet of {int(bet/2)} chips? Your current balance: {chips} chips. (y/n)')
             choice = input('>>>> ').lower().strip()
             if choice == 'y' or choice == 'yes':
                 insurance_bet = int(bet/2)
@@ -177,8 +177,8 @@ def blackjack_game(deck, chips):
 
     # checking if we can split hand
     if player_cards[0].value == player_cards[1].value and chips - bet >= 0:
-        print(f'Would you like to Split your hand? You will need to place an additional bet of {bet} chips. (y/n)')
         while True:
+            print(f'Would you like to Split your hand? You will need to place an additional bet of {bet} chips. Your current balance: {chips} chips. (y/n)')
             choice = input('>>>> ').lower().strip()
             if choice == 'y' or choice == 'yes':
 

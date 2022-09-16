@@ -1,23 +1,25 @@
 import random
-import os
+import colored
+from colored import stylize
 import sys
 import time
 
 
 class Card:
-    def __init__(self, suit, value, card_value):
+    def __init__(self, suit, value, card_value, color):
         self.suit = suit
         self.value = value
         self.card_value = card_value
+        self.color = color
 
 
 def print_cards(cards, hidden=False):
     if hidden:
-        print(cards[0].value + cards[0].suit, end=' ')
+        print(stylize(cards[0].value + cards[0].suit, colored.fg(cards[0].color)), end=' ')
         print('XX', end=' ')
     else:
         for card in cards:
-            print(card.value + card.suit, end=' ')
+            print(stylize(card.value + card.suit, colored.fg(card.color)), end=' ')
     print()
 
 
@@ -25,7 +27,7 @@ def new_deck_shuffle():
     deck = []
     for suit in suits * decks_quantity:
         for card in cards * decks_quantity:
-            deck.append(Card(suits_values[suit], card, cards_value[card]))
+            deck.append(Card(suits_values[suit], card, cards_value[card], suits_colors[suit]))
     random.shuffle(deck)
     return deck
 
@@ -35,10 +37,6 @@ def get_cards_value(cards):
     for card in cards:
         value += card.card_value
     return value
-
-
-def clear():
-    os.system('cls')
 
 
 def player_round(hand, deck, chips, bet):
@@ -248,26 +246,18 @@ def blackjack_game(deck, chips):
                     return deck, chips
 
                 # end split round
-<<<<<<< HEAD
-                if dealer_score >= first_hand_score:
-=======
                 if first_hand_score > 21:
                     print('Your first hand busted.')
                 elif dealer_score >= first_hand_score:
->>>>>>> no_colors
                     print(f'Dealer won with the score of {dealer_score} against your first hand score of {first_hand_score}.')
                     print(f'You lost {first_hand_bet} chips.')
                 else:
                     chips += first_hand_bet * 2
                     print(f'You won with the first hand score of {first_hand_score} against Dealer\'s score of {dealer_score}.')
                     print(f'You won {first_hand_bet} chips.')
-<<<<<<< HEAD
-                if dealer_score >= second_hand_score:
-=======
                 if second_hand_score > 21:
                     print('Your second hand busted.')
                 elif dealer_score >= second_hand_score:
->>>>>>> no_colors
                     print(f'Dealer won with the score of {dealer_score} against your second hand score of {second_hand_score}.')
                     print(f'You lost {second_hand_bet} chips.')
                 else:
@@ -331,6 +321,7 @@ def blackjack_game(deck, chips):
 if __name__ == '__main__':
     suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds']
     suits_values = {"Spades": "♠", "Hearts": "♥", "Clubs": "♣", "Diamonds": "♦"}
+    suits_colors = {"Spades": 8, "Hearts": 1, "Clubs": 8, "Diamonds": 1}
     cards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
     cards_value = {
         'A': 11, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10
